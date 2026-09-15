@@ -6,12 +6,20 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from llm import askLLM, askCloudLLM, askGemini, askGroq
+# from llm import askLLM, askCloudLLM, askGemini, askGroq
+from llms.llm import askLLM
 from prompts.system import system_prompt, system_promptChatGPT
 from pydantic_models.models import LLMOutput
 from agent.handleLLMoutput import processOutput
 from agent.state import initialize_cur_state, update_cur_state
 from agent.state import get_cur_state
+
+
+askLLMConfig = {
+    "llms": ["gemini", "cloudOllama"],
+    "retries": 3,
+    "scheme": LLMOutput
+}
 
 # messages = [{'role': 'system', 'content': system_prompt}]
 messages = [{'role': 'system', 'content': system_promptChatGPT}]
@@ -20,7 +28,8 @@ while True:
     # user_input = input("> ")
     user_input = "Compare the best cloud providers for deploying an AI startup in India, considering cost, GPU availability, and managed services."
     messages.append({"role": "user", "content": user_input})
-    llm_output = askGemini(messages)
+    llm_output = askLLM(messages, askLLMConfig["llms"], askLLMConfig["retries"], askLLMConfig["scheme"])
+    # print(llm_output)
     messages.append({"role": "assistant", "content": json.dumps(llm_output)})
 
     # classify llm_output
@@ -33,7 +42,7 @@ while True:
     if llm_output["action"] is None and llm_output["chat_output"] is None and llm_output["cur_state"] is not None and llm_output["cur_state"]["status"] != "completed":
         print("HHHH" * 40)
         messages.append({"role": "user", "content": "populate action property of json with required tool calls"})
-        llm_output = askGemini(messages)
+        llm_output = askLLM(messages, askLLMConfig["llms"], askLLMConfig["retries"], askLLMConfig["scheme"])
         messages.append({"role": "assistant", "content": json.dumps(llm_output)})
 
     if llm_output["action"] != None:
@@ -41,14 +50,14 @@ while True:
         while True:
             action_result = processOutput(llm_output)
             messages.append({"role": "assistant", "content":json.dumps(action_result)})
-            llm_output = askGemini(messages)
+            llm_output = askLLM(messages, askLLMConfig["llms"], askLLMConfig["retries"], askLLMConfig["scheme"])
 
             # ask clarifying question in between
             if llm_output["chat_output"] is not None and llm_output["cur_state"]["status"] != "completed": 
                 print(llm_output["chat_output"]["content"])
                 user_input = input("> ")
                 messages.append({"role": "user", "content": user_input})
-                llm_output = askGemini(messages)
+                llm_output = askLLM(messages, askLLMConfig["llms"], askLLMConfig["retries"], askLLMConfig["scheme"])
 
             if llm_output["action"] is None and llm_output["cur_state"]["status"] == "completed":
                 break

@@ -53,7 +53,6 @@ def processOutput(LLM_output):
             for use_tool in tool_calls:
                 update_tool_call_history([use_tool["name"], use_tool["args"]])
                 tool = tool_registry[use_tool["name"]]
-                print(f"🙃🙃🙃 tool args: ", use_tool["args"])
                 output = tool["function"](**use_tool["args"])
                 tool_calls_output.append({"tool_call_id": use_tool["tool_call_id"], "status": "success", "result": output})
         

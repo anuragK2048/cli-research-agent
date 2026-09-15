@@ -1,0 +1,12 @@
+[
+  {
+    "key": "india_gpu_providers",
+    "content": "Providers in India include global hyperscalers (AWS, Azure, GCP via Mumbai/Hyderabad regions) and specialized local providers (E2E Networks, Yotta Shakti Cloud, Cyfuture Cloud, NeevCloud) offering modern NVIDIA GPUs like H100, Blackwell Ultra, L4, A100 with INR billing and local support.",
+    "source": "E2E Networks, Bloomberg, New Indian Express"
+  },
+  {
+    "key": "cloud_providers_india",
+    "content": "AWS (Mumbai), Google Cloud (Mumbai, Delhi), Microsoft Azure (Mumbai, Pune, Chennai), IBM Cloud (Delhi), Oracle Cloud (Hyderabad), Alibaba Cloud (Hyderabad), Tata Communications, Reliance Jio, CtrlS, Netmagic (NTT).",
+    "source": "https://www.blackridgeresearch.com/blog/list-of-top-ten-largest-data-center-companies-in-india; https://cyfuture.cloud/blog/top-10-ai-data-center-companies-in-india-2024/"
+  }
+]
