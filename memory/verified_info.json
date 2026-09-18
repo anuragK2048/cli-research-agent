@@ -1,0 +1,12 @@
+{
+    "subtopic_id": [
+        {
+            "id": "",
+            "title": "from chunk",
+            "sources": ["chunk_id1", "chunk_id2"],
+            "content": "direct, from adjudicate(verdict summary)",
+            "trust_score": "1 for uncontested facts",
+            "status": ["supported", "contradicted", "unresolved", "uncontested"]
+        }
+    ]
+}

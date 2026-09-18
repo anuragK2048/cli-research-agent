@@ -1,0 +1,14 @@
+{
+    "subtopic_id": [
+        {
+            "fact_id": "",
+            "sources": ["chunk_id1", "chunk_id2"],
+            "claim": "",
+            "materiality": "high, low",
+            "confidence": "None",
+            "status": ["unresolved"],
+            "evidence_for": [],
+            "evidence_against": []
+        }
+    ]
+}

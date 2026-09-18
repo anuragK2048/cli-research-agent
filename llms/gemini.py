@@ -42,7 +42,7 @@ def askGemini(messages, pydantic_schema):
     try:
         if pydantic_schema is not None:
             response = client.models.generate_content(
-                model=models[3],
+                model=models[0],
                 contents=contents,
                 config={
                     "response_mime_type": "application/json",

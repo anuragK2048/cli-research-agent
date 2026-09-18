@@ -24,7 +24,7 @@ availaible_llms = {
     # "ollama": askOllama,
 }
 
-def askLLM(messages: list, llms: list, retries: int = 2, pydantic_schema=None):
+def askLLM(messages: list, pydantic_schema=None, llms: list = ["gemini"], retries: int = 2):
     """receives messages, list of llms for fallback priority wise, number of retries before fallback llm, pydantic schema for structured output"""
     start_time = perf_counter()
 
@@ -69,7 +69,7 @@ def askLLM(messages: list, llms: list, retries: int = 2, pydantic_schema=None):
         with open(f"llms/debug/{output["response_id"]}.json", "w") as f:
             json.dump(messages, f, indent=2, ensure_ascii=False)
 
-        print(output["parsed_output"])
+        # print(output["parsed_output"])
         return output["parsed_output"]
 
     raise
