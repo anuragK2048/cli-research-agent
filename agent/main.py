@@ -6,7 +6,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from llm import askLLM, askCloudLLM, askGemini, askGroq
+from llm import askLLM, askCloudLLM, askGemini
 from prompts.system import system_prompt, system_promptChatGPT
 from pydantic_models.models import LLMOutput
 from agent.handleLLMoutput import processOutput
@@ -17,8 +17,8 @@ from agent.state import get_cur_state
 messages = [{'role': 'system', 'content': system_promptChatGPT}]
 
 while True:
-    # user_input = input("> ")
-    user_input = "Compare the best cloud providers for deploying an AI startup in India, considering cost, GPU availability, and managed services."
+    user_input = input("> ")
+    # user_input = "Compare the best cloud providers for deploying an AI startup in India, considering cost, GPU availability, and managed services."
     messages.append({"role": "user", "content": user_input})
     llm_output = askGemini(messages)
     messages.append({"role": "assistant", "content": json.dumps(llm_output)})

@@ -414,7 +414,6 @@ IMPORTANT:
 - Dont not save similar notes with same key in save_info
 - Once you have saved the retrieved info then further proceed with plan
 - INCLUDE SOURCES OF RELEVANT DATA USED IN THE FINAL REPORT with website links
-- Always Save the key retrieved information using save_info before proceeding with next plan step
 """
 
 system_prompt = """
