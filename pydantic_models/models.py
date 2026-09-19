@@ -43,8 +43,9 @@ class DiscoverWebOutput(BaseModel):
 class FlaggedFact(BaseModel):
    fact_id: str
    claim: str
-   sources: list[str]
-   materiality: Literal["high", "low"]
+   source_chunk_ids: list[str]
+   reason: str
+   materiality: Literal["high", "low"] = "low"
 
 class FlagOutput(BaseModel):
    controversial_facts: List[FlaggedFact]
@@ -68,7 +69,7 @@ class BatchedEvidencesFor(BaseModel):
 
 class CorroborateBatchOutput(BaseModel):
    tool_calls: List[ToolCall] | None = None
-   result: BatchedEvidencesFor
+   result: List[BatchedEvidencesFor]
 
 
 class EvidenceAgainst(BaseModel):
@@ -87,7 +88,7 @@ class BatchedEvidencesAgainst(BaseModel):
 
 class ChallengeBatchOutput(BaseModel):
    tool_calls: List[ToolCall] | None = None
-   result: BatchedEvidencesAgainst
+   result: List[BatchedEvidencesAgainst]
 
 
 class FactAdjudicate(BaseModel):
@@ -95,7 +96,7 @@ class FactAdjudicate(BaseModel):
    verdict: Literal["supported", "contradicted", "unresolved"]
    summary: str
    trust_score: float
-   reason: str | None = None
+   verdict_reason: str | None = None
 
 class AdjudicateOutput(BaseModel):
    result: List[FactAdjudicate]
@@ -130,22 +131,22 @@ class ComposeOutput(BaseModel):
 
 class VerifiedInfo(BaseModel):
    id: str
-   title: str
-   sources: list[str]
+   title: str # replace it with keywords query maybe
+   sources: list[str] # chunk_ids
    content: str
    trust_score: float
    status: Literal["supported", "contradicted", "unresolved", "uncontested"]
 
 class RecentInfo(BaseModel):
    chunk_id: str
-   url: str
+   url: str 
    query: str
    title: str
    content: str
 
 
-class ControversialFacts(FlagOutput):
-   confidence: float
+class ControversialFacts(FlaggedFact):
+   computed_confidence: float | None
    status: Literal["unresolved"]
    evidence_for: List[EvidenceFor]
    evidence_against: List[EvidenceAgainst]

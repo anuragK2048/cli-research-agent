@@ -1,15 +1,39 @@
+import os
+from itertools import cycle
+
+from dotenv import load_dotenv
 from google import genai
 from pydantic import BaseModel, Field
 from time import perf_counter
 import json
 
-models = ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-3.5-flash", "gemini-3-flash-preview"]
+load_dotenv()
 
-client = genai.Client()
+models = ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-3.5-flash", "gemini-3-flash-preview", "gemini-3.5-flash"]
+
+api_keys = [
+    api_key
+    for api_key in (
+        os.getenv("GEMINI_API_KEY1"),
+        os.getenv("GEMINI_API_KEY2"),
+        os.getenv("GEMINI_API_KEY3"),
+        os.getenv("GEMINI_API_KEY4"),
+    )
+    if api_key
+]
+
+if not api_keys:
+    raise RuntimeError("Set at least one GEMINI_API_KEY1, GEMINI_API_KEY2, or GEMINI_API_KEY3")
+
+clients = cycle(
+    (genai.Client(api_key=api_key), key_number)
+    for key_number, api_key in enumerate(api_keys, start=1)
+)
 
 def askGemini(messages, pydantic_schema):
     """return structured output from gemini llm's"""
     start_time = perf_counter()
+    client, key_number = next(clients)
 
     # structure messages acc to gemini format
     system_instruction = None
@@ -42,7 +66,7 @@ def askGemini(messages, pydantic_schema):
     try:
         if pydantic_schema is not None:
             response = client.models.generate_content(
-                model=models[0],
+                model=models[4],
                 contents=contents,
                 config={
                     "response_mime_type": "application/json",
@@ -72,7 +96,7 @@ def askGemini(messages, pydantic_schema):
         pydantic_schema.model_validate(response.parsed)
         output = {
             "response_id": response.response_id,
-            "llm_name": response.model_version,
+            "llm_name": f"{response.model_version}, key-{key_number}",
             "parsed_output": parsed_output,
             "latency": round(perf_counter() - start_time, 2),
             "token_usage": {

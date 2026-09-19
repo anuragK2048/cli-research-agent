@@ -6,15 +6,60 @@ from typing import Literal, Optional
 
 state = {}
 recent_info = []
+controversial_facts = []
+verified_info = []
 
-def add_to_recent_info(new_info):
-    recent_info.append(new_info)
+def add_to_verified_info(new_verified_info: list):
+    verified_info.extend(new_verified_info)
+    log(verified_info, "verified_info")
+
+def get_verified_info():
+    return verified_info
+
+
+def add_to_controversial_facts(new_facts: list):
+    controversial_facts.extend(new_facts)
+    log(controversial_facts, "controversial_facts")
+
+def get_controversial_facts():
+    return controversial_facts
+
+def reset_controversial_facts():
+    controversial_facts.clear()
+
+
+def add_to_recent_info(new_recent_infos: list):
+    recent_info.extend(new_recent_infos)
+    log(recent_info, "recent_info")
+
+def get_recent_info():
+    return recent_info
+
+def reset_recent_info():
+    recent_info.clear()
+
 
 def update_cur_state(update):
     state.update(update)
 
 def get_cur_state():
     return state
+
+
+def log(data, filename):
+    # with open(f"memory/{filename}.jsonl", "a") as f:
+    #     f.write(json.dumps(data) + "\n")
+
+    # try:
+    #     with open(f"memory/{filename}.json", "r") as f:
+    #         previous_state = json.load(f)
+    # except (FileNotFoundError, json.JSONDecodeError):
+    #     previous_state = []
+
+    # previous_state.append(data)
+
+    with open(f"memory/{filename}.json", "w") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
 
 # cur_state = {"iteration": 0, "tool_calls": [], "errors": []}
 

@@ -66,7 +66,7 @@ def askLLM(messages: list, pydantic_schema=None, llms: list = ["gemini"], retrie
             json.dump(llm_log, f, indent=2, ensure_ascii=False)
 
         # log messages with response_id
-        with open(f"llms/debug/{output["response_id"]}.json", "w") as f:
+        with open(f"llms/debug/messages/{output["response_id"]}.json", "w") as f:
             json.dump(messages, f, indent=2, ensure_ascii=False)
 
         # print(output["parsed_output"])
