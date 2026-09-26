@@ -20,22 +20,6 @@ tool_registry = {
             "url": "string"
         }
     },
-#     "save_info": {
-#         "function": save_info,
-#         "description": "Save important points in notes file",
-#         "parameters": {
-#             "key": "string",
-#             "content": "string",
-#             "source": "string"
-#         }
-#     },
-#     "read_info": {
-#         "function": read_info,
-#         "description": "Retrieve important points from notes file",
-#         "parameters": {
-#             "key": "string"
-#         }
-#     },
 }
 
 def processOutput(stage, LLM_output):
@@ -121,7 +105,8 @@ def processOutput(stage, LLM_output):
                 if use_tool["name"] == "fetch_url":
                     discovered_chunks.extend(output["result"])
                     tool_calls_output.append({"tool_call_id": use_tool["id"], "status": "success", "result": "saved top relevant chunks from this webpage"})
-                tool_calls_output.append({"tool_call_id": use_tool["id"], "status": "success", "result": output})
+                else:
+                    tool_calls_output.append({"tool_call_id": use_tool["id"], "status": "success", "result": output})
 
             return {"tool_call_result": tool_calls_output}
 
@@ -205,5 +190,5 @@ def processOutput(stage, LLM_output):
 
     if stage == "assess":
         if LLM_output.get("requirement_fulfilled"):
-            if "requirement_fulfilled" == False:
+            if LLM_output.get("requirement_fulfilled") == False:
                 print(f"👹😓 requirement not fullfiled, gap-report: {LLM_output["gap_report"]}")
