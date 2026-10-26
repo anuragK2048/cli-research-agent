@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from typing import Literal, Optional
 from pydantic_models.models import LLMOutput
 from google import genai
-from groq import Groq
+# from groq import Groq
 
 import os
 from ollama import Client
@@ -21,7 +21,7 @@ client = Client(
 )
 
 gemini_client = genai.Client()
-groq_client = Groq()
+# groq_client = Groq()
 
 def askLLM(messages):
   response = chat(
@@ -135,63 +135,63 @@ def askGemini(messages):
   return response.parsed.model_dump()
 
 
-def askGroq(messages):
-  response = groq_client.chat.completions.create(
-      model="openai/gpt-oss-120b",
-      messages=messages,
-      temperature=1,
-      max_completion_tokens=2031,
-      top_p=1,
-      reasoning_effort="medium",
-      stream=False,
-      response_format={"type": "json_schema", "json_schema": {"name": "sql_query_generation", "schema": LLMOutput.model_json_schema()}},
-      stop=None,
-      tools=[]
-  )
+# def askGroq(messages):
+#   response = groq_client.chat.completions.create(
+#       model="openai/gpt-oss-120b",
+#       messages=messages,
+#       temperature=1,
+#       max_completion_tokens=2031,
+#       top_p=1,
+#       reasoning_effort="medium",
+#       stream=False,
+#       response_format={"type": "json_schema", "json_schema": {"name": "sql_query_generation", "schema": LLMOutput.model_json_schema()}},
+#       stop=None,
+#       tools=[]
+#   )
 
-  content = response.choices[0].message.content or "{}"
-  try:
-      with open("storage/raw_llm_output.json", "r") as f:
-        llm_log = json.load(f)
-  except (FileNotFoundError, json.JSONDecodeError):
-        llm_log = []
+#   content = response.choices[0].message.content or "{}"
+#   try:
+#       with open("storage/raw_llm_output.json", "r") as f:
+#         llm_log = json.load(f)
+#   except (FileNotFoundError, json.JSONDecodeError):
+#         llm_log = []
   
-  try:
-      # parsed = json.loads(content)
-      parsed = json.loads(content)
-  except json.JSONDecodeError as e:
-      print("JSON error:", e)
-      print("Position:", e.pos)
-      print("Column:", e.colno)
-      print("Content length:", len(content))
+#   try:
+#       # parsed = json.loads(content)
+#       parsed = json.loads(content)
+#   except json.JSONDecodeError as e:
+#       print("JSON error:", e)
+#       print("Position:", e.pos)
+#       print("Column:", e.colno)
+#       print("Content length:", len(content))
 
-      if content:
-          print("Around error:", repr(
-              content[max(0, e.pos - 200):e.pos + 200]
-          ))
-          print(
-              "Character:",
-              repr(content[e.pos]) if e.pos < len(content) else "<EOF>"
-          )
-      else:
-          print("Content is completely empty")
+#       if content:
+#           print("Around error:", repr(
+#               content[max(0, e.pos - 200):e.pos + 200]
+#           ))
+#           print(
+#               "Character:",
+#               repr(content[e.pos]) if e.pos < len(content) else "<EOF>"
+#           )
+#       else:
+#           print("Content is completely empty")
 
-      # raise
-      parsed = f"JSON error: {e}"
+#       # raise
+#       parsed = f"JSON error: {e}"
 
-  llm_log.append({"raw": content, "repr": repr(content), "raw_length": len(content), "parsed_pretty": parsed})
+#   llm_log.append({"raw": content, "repr": repr(content), "raw_length": len(content), "parsed_pretty": parsed})
 
-  with open("storage/raw_llm_output.json", "w") as f:
-    json.dump(llm_log, f, indent=2, ensure_ascii=False)
+#   with open("storage/raw_llm_output.json", "w") as f:
+#     json.dump(llm_log, f, indent=2, ensure_ascii=False)
 
-  try:
-    return LLMOutput.model_validate_json(content).model_dump()
+#   try:
+#     return LLMOutput.model_validate_json(content).model_dump()
 
-  except Exception as e:
-      # print("JSON/Pydantic error:", e)
-      # print("Response length:", len(content))
+#   except Exception as e:
+#       # print("JSON/Pydantic error:", e)
+#       # print("Response length:", len(content))
 
-      # if hasattr(e, "errors"):
-      #     print(e.errors())
-      raise
+#       # if hasattr(e, "errors"):
+#       #     print(e.errors())
+#       raise
 

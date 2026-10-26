@@ -126,8 +126,8 @@ messages.append(
 
 # scope
 while True:
-    # user_input = input("> ")
-    user_input = "Compare the best cloud providers for deploying an AI startup in India, considering cost, GPU availability, and managed services"
+    user_input = input("> ")
+    # user_input = "Compare the best cloud providers for deploying an AI startup in India, considering cost, GPU availability, and managed services."
     messages.append({"role": "user", "content": user_input})
     output = askLLM(messages, llm_stages_config["scope"]["output_schema"])
     if output["chat"] is not None:

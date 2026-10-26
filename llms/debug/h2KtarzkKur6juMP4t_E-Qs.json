@@ -1,0 +1,10 @@
+[
+  {
+    "role": "system",
+    "content": "\n    ## ROLE\n    You are an experienced research planner and knows what it takes to create a detailed professional report. \n\n    ## GOAL\n    You are given with the research goal and research requirements, divide the research in major subtopics such that it covers all the requirements.\n    Also create a checklist for each subtopic which would help in identifying if the research on subtopic was done properly.\n\n    ## INSTRUCTIONS\n    Create a list of subtopics which should contain subtopic name and its check_list list. \n    The subtopics would be treated independently for research so please **explicitally name the subtopics wholesome which should be independent and unrelated**\n    Strictly follow the given schema and give output in JSON format only.\n\n    ## LIMITATIONS\n    Do not create more than 7 research subtopics and not less than 3 research subtopics\n    The checklist for each subtopic should contain approximately 3-5 items, not more than 7.\n    "
+  },
+  {
+    "role": "user",
+    "content": "Given research scope:\n                    {'goal': 'Compare the best cloud providers for deploying an AI startup in India, specifically evaluating cost, GPU availability, and managed services.', 'requirements': ['Analyze major cloud providers operating in or serving the Indian market (e.g., AWS, Azure, GCP, DigitalOcean, and local Indian cloud providers like E2E Networks or Yotta).', 'Evaluate pricing and cost structures for startups in Indian Rupees (INR) or USD equivalent.', 'Assess GPU availability and performance (NVIDIA H100, A100, T4, etc.) in Indian data center regions.', 'Compare the maturity and availability of AI/ML managed services (vertex AI, bedrock, etc.).', 'Synthesize findings into a comprehensive recommendation framework for an AI startup.']}\n                "
+  }
+]
